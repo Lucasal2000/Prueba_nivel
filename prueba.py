@@ -3,6 +3,7 @@ from collections import deque #colas necesarias para la resolución
 def solvelabyrinth(labyrinth): 
     n = len(labyrinth)
     m = len(labyrinth[0])
+    vertical = False #variable vertical 
     start=(2,0) #empieza en x=2 ya que es la cabeza de la barra 
     queue=deque()
     queue.appendleft((start[0],start[1],0)) #introducimos la primera coordenada a la cola
@@ -22,8 +23,17 @@ def solvelabyrinth(labyrinth):
             m1=coord[1]+dir[1]
             #no posibles lugares
             if(n1<0 or n1 >=n or m1<0 or m1>=m or labyrinth[n1][m1]=="#" or visited[n1][m1]):continue
+            if(dir==[-1,1] or dir==[1,-1]):
+                vertical= not vertical
+            if(vertical == False):
+                if(n1 - 1<0 or n1 - 1 >=n or m1<0 or m1>=m or labyrinth[n1 - 1][m1]=="#"):continue
+                if(n1 - 2<0 or n1 - 2 >=n or m1<0 or m1>=m or labyrinth[n1 - 2][m1]=="#"):continue
+            else:
+                if(n1 <0 or n1 >=n or m1 -1 <0 or m1 - 1 >=m or labyrinth[n1][m1 - 1]=="#"):continue
+                if(n1<0 or n1>=n or m1 - 2<0 or m1 - 2>=m or labyrinth[n1][m1 - 2]=="#"):continue
             #nuevo movimiento
-            queue.appendleft((n1,m1,coord[2]+1))
+            queue.appendleft((n1,m1,coord[2]+1, vertical))
+            print(queue)
             
 
 
