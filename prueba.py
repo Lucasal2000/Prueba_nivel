@@ -6,16 +6,16 @@ def solvelabyrinth(labyrinth):
     m = len(labyrinth[0])
     vertical = False #variable vertical 
     start=(0,2) #empieza en x=2 ya que es la cabeza de la barra 
-    queue=deque()
-    queue.appendleft((start[0],start[1],0,vertical)) #introducimos la primera coordenada a la cola
+    queue=[]
+    queue.append((start[0],start[1],0,vertical)) #introducimos la primera coordenada a la cola
     directions=[[0,1],[0,-1],[1,0],[-1,0],[-1,1],[1,-1]] #las dos últimas son las rotaciones
-    visited=[[False]*m for _ in range(n)] #matriz mxn rellena de Falses
+    #visited=[[False]*m for _ in range(n)] #matriz mxn rellena de Falses
 
 #Bucle para buscar la salida
     while len(queue) !=0:
         #pdb.set_trace()
-        coord=queue.pop()
-        visited[coord[0]][coord[1]]=True #registramos los lugares visitados
+        coord=queue.pop(0)
+        #visited[coord[0]][coord[1]]=True #registramos los lugares visitados
         #coordenadas coinciden con el final
         if coord[0]==n-1 and coord[1]==m-1:
             return coord[2] 
@@ -35,8 +35,14 @@ def solvelabyrinth(labyrinth):
             else:
                 if(n1 - 1 <0 or n1 - 1 >=n or m1<0 or m1>=m or labyrinth[n1 - 1][m1]=="#"):continue
                 if(n1 - 2 <0 or n1 - 2 >=n or m1<0 or m1>=m or labyrinth[n1 - 2][m1]=="#"):continue
-            #nuevo movimiento[]
-            queue.appendleft((n1,m1,coord[2]+1, vertical))
+            #nuevo movimiento
+            new_node = (n1,m1,coord[2]+1, vertical)
+            while(queue.count(new_node)):
+                queue.remove(new_node)
+
+            queue.append(new_node)
+
+                
             
     else:
         return -1
@@ -63,8 +69,8 @@ labyrinth = [
     [".","#",".",".",".",".",".","#","."], 
     [".","#",".",".",".",".",".","#","."]
 ]
-#solve = solvelabyrinth(labyrinth)
-#print(solve)
+solve = solvelabyrinth(labyrinth)
+print(solve)
 
 #Test 3
 labyrinth = [
